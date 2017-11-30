@@ -19,7 +19,7 @@ import views.TransparentLabel;
 
 public class GridPanel extends JPanel {
 
-	public static final int DURATION = 750;
+	public static final int DURATION = 500;
 	public static final int PERIOD = 5;
 	private int curTime = 0;
 

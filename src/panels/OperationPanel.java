@@ -82,7 +82,7 @@ public abstract class OperationPanel extends JPanel {
 	 * ”“≤‡GridPanelµƒµ≠»Î∂Øª≠
 	 */
 	public void doAlpahInAima() {
-		gridPanel.doAlphaInAnim(0);
+		gridPanel.doAlphaInAnim(AnimationUtil.SLIDE_TIME+AnimationUtil.REBOUND_TIME);
 	}
 
 	protected void closeMyself() {
