@@ -2,22 +2,17 @@ package panels;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import adapter.ClickedListener;
+import adapter.ItemClickListener;
 import constant.Constants;
 import main.MyFrame;
-import panels.ChoicePanel.ItemClickListener;
 import views.LineSeparator;
 
 public class LeftSidePanel extends JPanel {
@@ -100,6 +95,8 @@ public class LeftSidePanel extends JPanel {
 			// repaint();
 			labels.add(label);
 		}
+		
+		setSelectedItem(0);
 	}
 
 	// 返回实际宽度-回弹宽度，即界面上实际可看到的宽度
@@ -140,9 +137,8 @@ public class LeftSidePanel extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub
 					super.mouseClicked(e);
-					clearClickedState();
-					label.setBackground(new Color(Constants.LIGHT_GRAY));
-
+					
+					setSelectedItem(position);
 					if (itemClickListener != null)
 						itemClickListener.onItemClick(position);
 				}
@@ -150,7 +146,12 @@ public class LeftSidePanel extends JPanel {
 		}
 
 	}
-
+	
+	private void setSelectedItem(int position) {
+		clearClickedState();
+		labels.get(position).setBackground(new Color(Constants.LIGHT_GRAY));
+	}
+	
 	// 把之前点击的Item的背景色恢复
 	private void clearClickedState() {
 		for (JLabel label : labels)

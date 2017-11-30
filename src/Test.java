@@ -24,12 +24,13 @@ public class Test extends JFrame {
 		frame.setVisible(true);
 	}
 
-	JPanel panel = new JPanel();
-
 	public Test() {
 		setLayout(null);
 		getContentPane().setBackground(Color.lightGray);
 		CraftOperationPanel panel=new CraftOperationPanel("123");
+		
+		panel.setBounds(0, 0, panel.getWidth(), panel.getHeight());
+		add(panel);
 	}
 
 }

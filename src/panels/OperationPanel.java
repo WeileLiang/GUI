@@ -1,23 +1,14 @@
 package panels;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 import adapter.NotifyListener;
-import constant.Constants;
-
-import views.ItemLabel;
-
 import main.MyFrame;
 import utils.AnimationUtil;
+import views.ItemLabel;
 
 public abstract class OperationPanel extends JPanel {
 	// 移除自身
@@ -31,22 +22,24 @@ public abstract class OperationPanel extends JPanel {
 
 	private List<ItemLabel> labels = new ArrayList<ItemLabel>();
 
+	// 处于管理状态的Item点击是选中效果，否则是缩放效果
+	protected boolean inManageState = false;
+
 	protected LeftSidePanel leftSidePanel;
 	protected GridPanel gridPanel;
 
 	private NotifyListener notifyListener;
-	
+
 	protected String tag;
+
 	public OperationPanel(String tag) {
-//		leftSidePanel = new LeftSidePanel(tag, Arrays.asList("管理组件", "导入组件"));
-//		gridPanel = new GridPanel(
-//				Arrays.asList("JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB"));
-		
-		this.tag=tag;
+
+		this.tag = tag;
 		initLeftPanel();
 		initGridPanel();
 		initViews();
 		measureAndLayout();
+		setListeners();
 	}
 
 	private void initViews() {
@@ -59,20 +52,22 @@ public abstract class OperationPanel extends JPanel {
 
 	}
 
-	public abstract void initLeftPanel();
-	public abstract void initGridPanel();
-	
-	
 	private void measureAndLayout() {
 		leftSidePanel.setBounds(-leftSidePanel.getWidth(), 0, leftSidePanel.getWidth(), leftSidePanel.getHeight());
 		gridPanel.setBounds(leftSidePanel.getVisibleWidth(), 0, gridPanel.getWidth(), gridPanel.getHeight());
 
 		add(leftSidePanel);
 		add(gridPanel);
-		
+
 		doReboundSlideInAnim();
-		gridPanel.doAlphaInAnim(AnimationUtil.SLIDE_TIME+AnimationUtil.REBOUND_TIME);
+		doAlpahInAima();
 	}
+
+	public abstract void initLeftPanel();
+
+	public abstract void initGridPanel();
+
+	public abstract void setListeners();
 
 	/**
 	 * 左侧菜单弹出动画
@@ -81,13 +76,20 @@ public abstract class OperationPanel extends JPanel {
 		AnimationUtil.doSlideAima(leftSidePanel, -leftSidePanel.getWidth(), 0, 0, 0, AnimationUtil.SLIDE_TIME, 0);
 		AnimationUtil.doSlideAima(leftSidePanel, 0, -LeftSidePanel.REBOUND_WIDTH, 0, 0, AnimationUtil.REBOUND_TIME,
 				AnimationUtil.SLIDE_TIME);
+	}
 
+	/**
+	 * 右侧GridPanel的淡入动画
+	 */
+	public void doAlpahInAima() {
+		gridPanel.doAlphaInAnim(0);
 	}
 
 	protected void closeMyself() {
 		if (notifyListener != null) {
 			notifyListener.notifyParent(SIGNAL_REMOVE);
 			leftSidePanel.setBounds(-leftSidePanel.getWidth(), 0, leftSidePanel.getWidth(), leftSidePanel.getHeight());
+			gridPanel.setAlpha(.0f);
 		}
 
 	}

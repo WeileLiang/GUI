@@ -9,15 +9,17 @@ import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
+import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
+
+import adapter.ItemClickListener;
 import main.MyFrame;
-import panels.ChoicePanel.ItemClickListener;
-import sun.nio.cs.ext.MacHebrew;
 import utils.AnimationUtil;
 import views.ItemLabel;
+import views.TransparentLabel;
 
 public class GridPanel extends JPanel {
 
-	public static final int DURATION = 350;
+	public static final int DURATION = 750;
 	public static final int PERIOD = 5;
 	private int curTime = 0;
 
@@ -34,6 +36,8 @@ public class GridPanel extends JPanel {
 	protected List<String> datas;
 	protected List<ItemLabel> labels;
 
+	private List<Boolean> chosenStates;
+
 	// 是否处于管理状态，若是，则item的点击效果是选中，否则点击效果是缩放
 	protected boolean inManageState = false;
 
@@ -44,7 +48,7 @@ public class GridPanel extends JPanel {
 
 		initViews();
 		measureAndLayout();
-		// setListeners();
+		setListeners();
 	}
 
 	private void initViews() {
@@ -57,13 +61,14 @@ public class GridPanel extends JPanel {
 
 	private void measureAndLayout() {
 		labels = new ArrayList<ItemLabel>();
-
+		chosenStates = new ArrayList<>();
 		int curX = marginLR, curY = marginTB;
 		for (int i = 0; i < datas.size(); i++) {
 			ItemLabel label = new ItemLabel(datas.get(i), .0f);
 
 			label.setBounds(curX, curY, label.getWidth(), label.getHeight());
 			labels.add(label);
+			chosenStates.add(false);
 			add(label);
 
 			if (i % ITEM_COUNT_IN_LINE == ITEM_COUNT_IN_LINE - 1) {
@@ -76,21 +81,23 @@ public class GridPanel extends JPanel {
 	}
 
 	private void setListeners() {
-		for (ItemLabel label : labels) {
-			label.addMouseListener(new MouseAdapter() {
+		for (int i = 0; i < labels.size(); i++) {
+			final int Position = i;
+			labels.get(i).addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub
 					super.mouseClicked(e);
+					if (itemClickListener != null)
+						itemClickListener.onItemClick(Position);
 
-					if (inManageState) {
-
-					} else {
-						AnimationUtil.doShrinkAnima(label.getInnerLabel());
-					}
 				}
 			});
 		}
+	}
+
+	public TransparentLabel getKthItem(int position) {
+		return labels.get(position).getInnerLabel();
 	}
 
 	/**
@@ -123,6 +130,24 @@ public class GridPanel extends JPanel {
 			label.setAlpha(alpha);
 
 		repaint();
+	}
+
+	/**
+	 * 清楚搜索Item的选中状态
+	 */
+	public void clearChosenStates() {
+		for (int i = 0; i < chosenStates.size(); i++) {
+			if (chosenStates.get(i)) {
+				chosenStates.set(i, false);
+				labels.get(i).setChosenBorder(false);
+			}
+		}
+	}
+	
+	public void setChosenState(int position) {
+		boolean state=chosenStates.get(position);
+		chosenStates.set(position, !state);
+		labels.get(position).setChosenBorder(!state);
 	}
 
 	public void setItemClickListener(ItemClickListener itemClickListener) {

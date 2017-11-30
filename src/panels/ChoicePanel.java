@@ -4,16 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.Period;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import adapter.ClickedListener;
+import adapter.ItemClickListener;
 import adapter.NotifyListener;
 import constant.Constants;
 import main.MyFrame;
@@ -108,7 +106,7 @@ public class ChoicePanel extends JPanel {
 
 					itemPosition = position;
 					doAlphaAnim(ANIM_OUT);
-//					itemClickListener.onItemClick(position);
+					// itemClickListener.onItemClick(position);
 
 				}
 			});
@@ -149,13 +147,13 @@ public class ChoicePanel extends JPanel {
 			}
 		}, delayTime, LoginPanel.PERIOD);
 	}
-	
-	//重新加载该Panel时重置各个按钮的透明度
+
+	// 重新加载该Panel时重置各个按钮的透明度
 	public void refreshUI() {
-		for(TransparentLabel label:labels) {
+		for (TransparentLabel label : labels) {
 			label.setAlpha(1.f);
 		}
-		
+
 		repaint();
 	}
 
@@ -165,10 +163,6 @@ public class ChoicePanel extends JPanel {
 
 	public void setNotifyListener(NotifyListener notifyListener) {
 		this.notifyListener = notifyListener;
-	}
-
-	public interface ItemClickListener {
-		void onItemClick(int position);
 	}
 
 }

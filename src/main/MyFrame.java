@@ -5,9 +5,9 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 
+import adapter.ItemClickListener;
 import adapter.NotifyListener;
 import panels.ChoicePanel;
-import panels.ChoicePanel.ItemClickListener;
 import panels.CraftOperationPanel;
 import panels.LoginPanel;
 import panels.OperationPanel;
@@ -86,12 +86,11 @@ public class MyFrame extends JFrame {
 
 		// 点击其中一个操作选项后就加载对应的操作详情页
 		choicePanel.setItemClickListener(new ItemClickListener() {
-
+			
+			@Override
 			public void onItemClick(int position) {
 				// TODO Auto-generated method stub
 				layeredPane.remove(choicePanel);
-				// choicePanel.setVisible(false);
-				// repaint();
 				addOperationPanel(position);
 			}
 		});
@@ -109,10 +108,7 @@ public class MyFrame extends JFrame {
 				public void notifyParent(int signalType) {
 					// TODO Auto-generated method stub
 					layeredPane.remove(operationPanel);
-					// operationPanel.setVisible(false);
-					// repaint();
 					readdChoicePanel();
-					// System.out.println(123);
 				}
 			});
 
@@ -123,11 +119,12 @@ public class MyFrame extends JFrame {
 
 	}
 
-	public void readdOperationPanel(){
-		layeredPane.add(operationPanel,0);
+	public void readdOperationPanel() {
+		layeredPane.add(operationPanel, 0);
 		operationPanel.doReboundSlideInAnim();
+		operationPanel.doAlpahInAima();
 	}
-	
+
 	public void readdChoicePanel() {
 		layeredPane.add(choicePanel, 0);
 		// choicePanel.setVisible(true);
