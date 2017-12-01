@@ -1,15 +1,17 @@
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JPanel;import com.sun.accessibility.internal.resources.accessibility_zh_CN;
 
 import constant.Constants;
 import main.MyFrame;
 import panels.CraftOperationPanel;
 import utils.AnimationUtil;
+import utils.FileUtil;
 import views.ItemLabel;
 
 public class Test extends JFrame {
@@ -17,11 +19,12 @@ public class Test extends JFrame {
 	static int i = 0;
 
 	public static void main(String[] args) {
-		Test frame = new Test();
-		frame.setSize(MyFrame.WIDTH, MyFrame.HEIGHT);
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setVisible(true);
+//		Test frame = new Test();
+//		frame.setSize(MyFrame.WIDTH, MyFrame.HEIGHT);
+//		frame.setLocationRelativeTo(null);
+//		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		frame.setVisible(true);
+		
 	}
 
 	public Test() {

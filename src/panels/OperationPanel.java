@@ -27,7 +27,7 @@ public abstract class OperationPanel extends JPanel {
 
 	protected LeftSidePanel leftSidePanel;
 	protected GridPanel gridPanel;
-
+	
 	private NotifyListener notifyListener;
 
 	protected String tag;
