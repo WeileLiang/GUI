@@ -29,9 +29,9 @@ public class GridPanel extends JPanel {
 	private int height = MyFrame.HEIGHT;
 
 	private int marginLR = width / 20;
-	private int marginTB = height / 12;
-	private int gapHor = width / 18;
-	private int gapVer = height / 20;
+	private int marginTB = height / 10;
+	private int gapHor = width / 16;
+	private int gapVer = height / 25;
 
 	protected List<String> datas;
 	protected List<ItemLabel> labels;
@@ -41,7 +41,9 @@ public class GridPanel extends JPanel {
 	// 是否处于管理状态，若是，则item的点击效果是选中，否则点击效果是缩放
 	protected boolean inManageState = false;
 
-	protected ItemClickListener itemClickListener;
+	protected ItemClickListener gridItemClickListener;
+	private ItemClickListener manageItemClickListener;
+	private ManagePanel managePanel;
 
 	public GridPanel(List<String> datas) {
 		this.datas = datas;
@@ -88,12 +90,29 @@ public class GridPanel extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub
 					super.mouseClicked(e);
-					if (itemClickListener != null)
-						itemClickListener.onItemClick(Position);
+					if (gridItemClickListener != null)
+						gridItemClickListener.onItemClick(Position);
 
 				}
 			});
 		}
+	}
+
+	public void showManagePanel() {
+		if (managePanel == null) {
+			managePanel = new ManagePanel();
+			managePanel.setBounds(marginLR, -managePanel.getHeight(), managePanel.getWidth(), managePanel.getHeight());
+			add(managePanel);
+			AnimationUtil.doSlideAima(managePanel, managePanel.getX(), managePanel.getX(), -managePanel.getHeight(),
+					(marginTB - managePanel.getHeight()) / 2, 500, 0);
+			
+		} else {
+			add(managePanel);
+		}
+	}
+
+	public void hideManagePanel() {
+		remove(managePanel);
 	}
 
 	public TransparentLabel getKthItem(int position) {
@@ -143,15 +162,18 @@ public class GridPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	public void setChosenState(int position) {
-		boolean state=chosenStates.get(position);
+		boolean state = chosenStates.get(position);
 		chosenStates.set(position, !state);
 		labels.get(position).setChosenBorder(!state);
 	}
 
-	public void setItemClickListener(ItemClickListener itemClickListener) {
-		this.itemClickListener = itemClickListener;
+	public void setGridItemClickListener(ItemClickListener itemClickListener) {
+		this.gridItemClickListener = itemClickListener;
 	}
 
+	public void setManageItemClickListener(ItemClickListener manageItemClickListener) {
+		this.manageItemClickListener = manageItemClickListener;
+	}
 }

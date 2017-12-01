@@ -19,9 +19,9 @@ public class ItemLabel extends JPanel {
 
 	private String text;
 	// ±ß³¤
-	private int side = MyFrame.WIDTH / 10;
+	public static final int side = MyFrame.WIDTH / 10;
 	// ÄÚ±ß¾à
-	private int padding = side / 15;
+	public static final int padding = side / 15;
 
 	private TransparentLabel label;
 
@@ -40,7 +40,7 @@ public class ItemLabel extends JPanel {
 		label = new TransparentLabel(text, alpha, new Font("ºÚÌå", Font.BOLD, 18));
 		label.setBackground(new Color(Constants.WINE_RED));
 		measureAndLayout();
-//		setListeners();
+		// setListeners();
 	}
 
 	private void measureAndLayout() {
@@ -83,7 +83,7 @@ public class ItemLabel extends JPanel {
 	public boolean getChosenState() {
 		return chosenState;
 	}
-	
+
 	public TransparentLabel getInnerLabel() {
 		return label;
 	}
