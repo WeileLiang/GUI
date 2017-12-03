@@ -124,7 +124,7 @@ public class ChoicePanel extends JPanel {
 
 		final int lastTime = LoginPanel.LAST_TIME * 4 / 3;
 		final Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
+		timer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {

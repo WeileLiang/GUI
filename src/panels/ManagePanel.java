@@ -21,9 +21,9 @@ public class ManagePanel extends JPanel {
 	private int width = MyFrame.WIDTH / 2;
 	private int height = MyFrame.HEIGHT / 20;
 
-	private int labelWidth = height * 3;
+	private int labelWidth = height * 26 / 10;
 
-	private int gapHor = labelWidth / 3;
+	private int gapHor = labelWidth / 5;
 
 	JLabel importLabel = new JLabel("导入", JLabel.CENTER);
 	JLabel deleteLabel = new JLabel("删除", JLabel.CENTER);
@@ -31,19 +31,19 @@ public class ManagePanel extends JPanel {
 	JLabel allNotLabel = new JLabel("全不选", JLabel.CENTER);
 	JLabel inverseLabel = new JLabel("反选", JLabel.CENTER);
 
-	List<JLabel> labels = Arrays.asList(deleteLabel, allLabel, allNotLabel, inverseLabel);
+	List<JLabel> labels = Arrays.asList(importLabel, deleteLabel, allLabel, allNotLabel, inverseLabel);
 
 	private ItemClickListener itemClickListener;
 
 	public ManagePanel() {
 		initViews();
 		measureAndLayout();
-//		setListeners();
+		setListeners();
 	}
 
 	private void initViews() {
 		// TODO Auto-generated method stub
-		setBackground(null);
+		setLayout(null);
 		setOpaque(false);
 
 		setSize(width, height);
@@ -56,6 +56,7 @@ public class ManagePanel extends JPanel {
 			label.setBackground(Color.LIGHT_GRAY);
 			label.setForeground(Color.WHITE);
 			label.setFont(font);
+			label.setBorder(border);
 		}
 
 		deleteLabel.setBackground(Color.RED);
@@ -67,7 +68,7 @@ public class ManagePanel extends JPanel {
 		for (JLabel label : labels) {
 			label.setSize(labelWidth, height);
 			label.setBounds(curX, 0, label.getWidth(), label.getHeight());
-			curX += gapHor+labelWidth;
+			curX += gapHor + labelWidth;
 
 			add(label);
 		}
@@ -84,6 +85,8 @@ public class ManagePanel extends JPanel {
 					AnimationUtil.doShrinkAnima(labels.get(position));
 					if (itemClickListener != null)
 						itemClickListener.onItemClick(position);
+
+					print();
 				}
 			});
 		}
@@ -95,6 +98,12 @@ public class ManagePanel extends JPanel {
 
 	public void setItemClickListener(ItemClickListener itemClickListener) {
 		this.itemClickListener = itemClickListener;
+	}
+
+	public void print() {
+		for (JLabel label : labels) {
+			System.out.println(label.getX() + " " + label.getWidth());
+		}
 	}
 
 }
