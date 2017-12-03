@@ -125,7 +125,7 @@ public class LoginPanel extends JPanel {
 				final int totalDistance = MyFrame.HEIGHT - initY;
 				final long start = System.currentTimeMillis();
 				last = start;
-				timer.schedule(new TimerTask() {
+				timer.scheduleAtFixedRate(new TimerTask() {
 
 					@Override
 					public void run() {

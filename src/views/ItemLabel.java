@@ -77,7 +77,7 @@ public class ItemLabel extends JPanel {
 
 	public void setChosenBorder(boolean chosen) {
 		chosenState = chosen;
-		setBorder(chosen ? chosenBorder : null);
+   		setBorder(chosen?chosenBorder:null);
 	}
 
 	public boolean getChosenState() {

@@ -6,14 +6,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import adapter.ItemClickListener;
+import jdk.internal.dynalink.beans.StaticClass;
 import utils.AnimationUtil;
 import utils.FileUtil;
 
 public class CraftOperationPanel extends OperationPanel {
 
-	private static final String JOBS_PATH = ".\\jobs";
+	public static final String JOBS_PATH = ".\\jobs";
 
-	private static String[] leftItems = { "组件详情", "导入组件", "管理组件" };
+	private static String[] leftItems = { "组件详情", "管理组件" };
 
 	// 组件的名称集合
 	private List<String> itemNames;
@@ -47,11 +48,38 @@ public class CraftOperationPanel extends OperationPanel {
 				// TODO Auto-generated method stub
 				if (inManageState) {
 					gridPanel.setChosenState(position);
-				} else{
+
+				} else {
 					AnimationUtil.doShrinkAnima(gridPanel.getKthItem(position));
 					FileUtil.openFile(itemPaths.get(position));
 				}
 
+			}
+		});
+
+		gridPanel.setManageItemClickListener(new ItemClickListener() {
+
+			@Override
+			public void onItemClick(int position) {
+				// TODO Auto-generated method stub
+				switch (position) {
+				case 0:// 导入
+
+					break;
+				case 1:// 删除
+					break;
+				case 2:// 全选
+					gridPanel.handleAllStates(true);
+					break;
+				case 3:// 全不选
+					gridPanel.handleAllStates(false);
+					break;
+				case 4:// 反选
+					gridPanel.inverseSelect();
+					break;
+				default:
+					break;
+				}
 			}
 		});
 
@@ -60,18 +88,19 @@ public class CraftOperationPanel extends OperationPanel {
 			@Override
 			public void onItemClick(int position) {
 				// TODO Auto-generated method stub
-				if (position == leftItems.length - 1)
+
+				if (position == 1)
 					inManageState = true;
 				else {
 					inManageState = false;
 					gridPanel.clearChosenStates();
-//					gridPanel.hideManagePanel();
+					// gridPanel.hideManagePanel();
 				}
 				switch (position) {
 				case 0:// 组件详情
 
 					break;
-				case 2:
+				case 1:
 					gridPanel.showManagePanel();
 					break;
 				default:

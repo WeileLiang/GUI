@@ -31,7 +31,7 @@ public class AnimationUtil {
 		int disY = targetY - startY;
 
 		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
+		timer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
@@ -65,7 +65,7 @@ public class AnimationUtil {
 		final int initHeigth = component.getHeight();
 
 		Timer shrinkTimer = new Timer();
-		shrinkTimer.schedule(new TimerTask() {
+		shrinkTimer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
@@ -95,7 +95,7 @@ public class AnimationUtil {
 		int initWidth = component.getWidth();
 		int initHeight = component.getHeight();
 
-		timer.schedule(new TimerTask() {
+		timer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {

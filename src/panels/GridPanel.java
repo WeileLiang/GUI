@@ -102,10 +102,11 @@ public class GridPanel extends JPanel {
 		if (managePanel == null) {
 			managePanel = new ManagePanel();
 			managePanel.setBounds(marginLR, -managePanel.getHeight(), managePanel.getWidth(), managePanel.getHeight());
+			managePanel.setItemClickListener(manageItemClickListener);
 			add(managePanel);
 			AnimationUtil.doSlideAima(managePanel, managePanel.getX(), managePanel.getX(), -managePanel.getHeight(),
 					(marginTB - managePanel.getHeight()) / 2, 500, 0);
-			
+
 		} else {
 			add(managePanel);
 		}
@@ -113,6 +114,27 @@ public class GridPanel extends JPanel {
 
 	public void hideManagePanel() {
 		remove(managePanel);
+	}
+
+	/**
+	 * 处理全部item的状态
+	 */
+	public void handleAllStates(boolean chosen) {
+		for (int i = 0; i < chosenStates.size(); i++) {
+			chosenStates.set(i, chosen);
+			labels.get(i).setChosenBorder(chosen);
+		}
+	}
+
+	/**
+	 * 反选
+	 */
+	public void inverseSelect() {
+		for (int i = 0; i < chosenStates.size(); i++) {
+			boolean curState = chosenStates.get(i);
+			chosenStates.set(i, !curState);
+			labels.get(i).setChosenBorder(!curState);
+		}
 	}
 
 	public TransparentLabel getKthItem(int position) {
@@ -129,7 +151,7 @@ public class GridPanel extends JPanel {
 		float targetAlpha = 1.f;
 
 		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
+		timer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
