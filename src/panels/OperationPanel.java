@@ -24,6 +24,7 @@ public abstract class OperationPanel extends JPanel {
 
 	// 处于管理状态的Item点击是选中效果，否则是缩放效果
 	protected boolean inManageState = false;
+	protected String firstLabeltext;
 
 	protected LeftSidePanel leftSidePanel;
 	protected GridPanel gridPanel;

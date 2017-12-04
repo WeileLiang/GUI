@@ -86,12 +86,18 @@ public class ManagePanel extends JPanel {
 					if (itemClickListener != null)
 						itemClickListener.onItemClick(position);
 
-					print();
 				}
 			});
 		}
 	}
 
+	/**
+	 * 根据不同的类别（产品、工艺、资源）改变第一个按钮的内容
+	 */
+	public void setFirstLabelText(String text) {
+		importLabel.setText(text);
+	}
+	
 	public void setImportLabelText(String text) {
 		importLabel.setText(text);
 	}
@@ -100,10 +106,5 @@ public class ManagePanel extends JPanel {
 		this.itemClickListener = itemClickListener;
 	}
 
-	public void print() {
-		for (JLabel label : labels) {
-			System.out.println(label.getX() + " " + label.getWidth());
-		}
-	}
 
 }

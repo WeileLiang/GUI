@@ -37,6 +37,8 @@ public class CraftOperationPanel extends OperationPanel {
 		// TODO Auto-generated method stub
 		initRightItems();
 		gridPanel = new GridPanel(itemNames);
+
+		firstLabeltext = "导入";
 	}
 
 	@Override
@@ -94,14 +96,15 @@ public class CraftOperationPanel extends OperationPanel {
 				else {
 					inManageState = false;
 					gridPanel.clearChosenStates();
-					// gridPanel.hideManagePanel();
+					gridPanel.hideManagePanel();
+					repaint();
 				}
 				switch (position) {
 				case 0:// 组件详情
 
 					break;
 				case 1:
-					gridPanel.showManagePanel();
+					gridPanel.showManagePanel(firstLabeltext);
 					break;
 				default:
 					break;

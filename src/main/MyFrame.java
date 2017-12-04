@@ -5,12 +5,16 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 
+import com.oracle.jrockit.jfr.Producer;
+
 import adapter.ItemClickListener;
 import adapter.NotifyListener;
 import panels.ChoicePanel;
 import panels.CraftOperationPanel;
 import panels.LoginPanel;
 import panels.OperationPanel;
+import panels.ProductOperationPanel;
+import panels.ResourceOperationPanel;
 import views.ShadePanel;
 
 public class MyFrame extends JFrame {
@@ -35,6 +39,7 @@ public class MyFrame extends JFrame {
 	private ChoicePanel choicePanel = new ChoicePanel();
 
 	private OperationPanel operationPanel;
+	private OperationPanel[] operationPanels = new OperationPanel[4];
 
 	public MyFrame() {
 
@@ -86,7 +91,7 @@ public class MyFrame extends JFrame {
 
 		// 点击其中一个操作选项后就加载对应的操作详情页
 		choicePanel.setItemClickListener(new ItemClickListener() {
-			
+
 			@Override
 			public void onItemClick(int position) {
 				// TODO Auto-generated method stub
@@ -98,31 +103,42 @@ public class MyFrame extends JFrame {
 	}
 
 	private void addOperationPanel(int position) {
-		if (operationPanel == null) {
-			operationPanel = new CraftOperationPanel(ChoicePanel.OPERATION_NAMES[position]);
-			operationPanel.setBounds(0, 0, operationPanel.getWidth(), operationPanel.getHeight());
-			layeredPane.add(operationPanel, 0);
-			operationPanel.setNotifyListener(new NotifyListener() {
+		operationPanel = operationPanels[position];
+		if (operationPanels[position] == null) {
+			if (position == 0)
+				operationPanels[position] = new ProductOperationPanel(ChoicePanel.OPERATION_NAMES[position]);
+			else if (position == 1)
+				operationPanels[position] = new ResourceOperationPanel(ChoicePanel.OPERATION_NAMES[position]);
+			else if (position == 2)
+				operationPanels[position] = new CraftOperationPanel(ChoicePanel.OPERATION_NAMES[position]);
+
+			// operationPanel = new
+			// CraftOperationPanel(ChoicePanel.OPERATION_NAMES[position]);
+			operationPanels[position].setBounds(0, 0, operationPanels[position].getWidth(),
+					operationPanels[position].getHeight());
+			layeredPane.add(operationPanels[position], 0);
+
+			operationPanels[position].setNotifyListener(new NotifyListener() {
 
 				@Override
 				public void notifyParent(int signalType) {
 					// TODO Auto-generated method stub
-					layeredPane.remove(operationPanel);
+					layeredPane.remove(operationPanels[position]);
 					readdChoicePanel();
 				}
 			});
 
 		} else {
-			readdOperationPanel();
+			readdOperationPanel(position);
 			// operationPanel.setVisible(true);
 		}
 
 	}
 
-	public void readdOperationPanel() {
-		layeredPane.add(operationPanel, 0);
-		operationPanel.doReboundSlideInAnim();
-		operationPanel.doAlpahInAima();
+	public void readdOperationPanel(int position) {
+		layeredPane.add(operationPanels[position], 0);
+		operationPanels[position].doReboundSlideInAnim();
+		operationPanels[position].doAlpahInAima();
 	}
 
 	public void readdChoicePanel() {
