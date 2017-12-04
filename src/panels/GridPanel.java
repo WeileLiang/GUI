@@ -28,7 +28,7 @@ public class GridPanel extends JPanel {
 	private int width = MyFrame.WIDTH * 3 / 4;
 	private int height = MyFrame.HEIGHT;
 
-	private int marginLR = width / 20;
+	private int marginLR = width / 27;
 	private int marginTB = height / 10;
 	private int gapHor = width / 16;
 	private int gapVer = height / 25;
@@ -98,9 +98,10 @@ public class GridPanel extends JPanel {
 		}
 	}
 
-	public void showManagePanel() {
+	public void showManagePanel(String text) {
 		if (managePanel == null) {
 			managePanel = new ManagePanel();
+			managePanel.setFirstLabelText(text);
 			managePanel.setBounds(marginLR, -managePanel.getHeight(), managePanel.getWidth(), managePanel.getHeight());
 			managePanel.setItemClickListener(manageItemClickListener);
 			add(managePanel);
@@ -109,11 +110,13 @@ public class GridPanel extends JPanel {
 
 		} else {
 			add(managePanel);
+			repaint();
 		}
 	}
 
 	public void hideManagePanel() {
 		remove(managePanel);
+		repaint();
 	}
 
 	/**

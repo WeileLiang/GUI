@@ -18,17 +18,17 @@ import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 import utils.AnimationUtil;
 import utils.FileUtil;
 
-public class ProductOperationPanel extends OperationPanel {
+public class ResourceOperationPanel extends OperationPanel {
 
-	public static final String PRODUCT_PATH = ".\\products";
+	public static final String JOBSHOPS_PATH = ".\\jobshops";
 
-	private static String[] leftItems = { "产品详情", "产品管理" };
+	private static String[] leftItems = { "车间详情", "车间管理" };
 	// 产品的名称集合
 	private List<String> itemNames;
 	// 产品包含的组件集合
-	private List<List<String>> jobsItems;
+	private List<List<String>> machineItems;
 
-	public ProductOperationPanel(String tag) {
+	public ResourceOperationPanel(String tag) {
 		super(tag);
 		// TODO Auto-generated constructor stub
 	}
@@ -60,10 +60,11 @@ public class ProductOperationPanel extends OperationPanel {
 				else {
 					inManageState = false;
 					gridPanel.clearChosenStates();
-					gridPanel.hideManagePanel();
+					 gridPanel.hideManagePanel();
+					 repaint();
 				}
 				switch (position) {
-				case 0:// 产品详情
+				case 0:// 组件详情
 
 					break;
 				case 1:
@@ -123,26 +124,26 @@ public class ProductOperationPanel extends OperationPanel {
 	 */
 	private void initGridList() {
 		itemNames = new ArrayList<String>();
-		jobsItems = new ArrayList<>();
+		machineItems = new ArrayList<>();
 
-		File file = new File(PRODUCT_PATH);
+		File file = new File(JOBSHOPS_PATH);
 		if (!file.exists())
 			return;
 
-		File[] products = file.listFiles();
+		File[] jobShops = file.listFiles();
 
-		for (int i = 0; i < products.length; i++) {
-			itemNames.add(products[i].getName().split("\\.")[0]);
-			List<String> jobs = new ArrayList<>();
+		for (int i = 0; i < jobShops.length; i++) {
+			itemNames.add(jobShops[i].getName().split("\\.")[0]);
+			List<String> machines = new ArrayList<>();
 			BufferedReader reader = null;
 			try {
-				reader = new BufferedReader(new InputStreamReader(new FileInputStream(products[i].getAbsolutePath())));
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(jobShops[i].getAbsolutePath())));
 				String line = null;
 				while ((line = reader.readLine()) != null) {
-					jobs.add(line.trim());
+					machines.add(line.trim());
 				}
 
-				jobsItems.add(jobs);
+				machineItems.add(machines);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -161,31 +162,18 @@ public class ProductOperationPanel extends OperationPanel {
 		}
 
 	}
-
+	
 	private void showItemInfoDialog(int position) {
-		ItemInfoPanel panel = new ItemInfoPanel(itemNames.get(position), jobsItems.get(position));
+		ItemInfoPanel panel = new ItemInfoPanel(itemNames.get(position), machineItems.get(position));
 		JDialog dialog = new JDialog();
 		dialog.setTitle(itemNames.get(position));
 		dialog.setSize(panel.getWidth(), panel.getHeight());
 		dialog.setLayout(null);
 		panel.setBounds(0, 0, panel.getWidth(), panel.getHeight());
-
-		panel.setItemClickListener(new ItemClickListener() {
-
-			@Override
-			public void onItemClick(int index) {
-				// TODO Auto-generated method stub
-				File file = new File(
-						CraftOperationPanel.JOBS_PATH + File.separator + jobsItems.get(position).get(index) + ".txt");
-				if (file.exists())
-					FileUtil.openFile(file.getAbsolutePath());
-			}
-		});
-
 		dialog.add(panel);
 		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
 	}
-
+	
 }
