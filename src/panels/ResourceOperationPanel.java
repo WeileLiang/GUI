@@ -173,6 +173,7 @@ public class ResourceOperationPanel extends OperationPanel {
 		dialog.add(panel);
 		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
 		dialog.setLocationRelativeTo(null);
+		dialog.setResizable(false);
 		dialog.setVisible(true);
 	}
 	

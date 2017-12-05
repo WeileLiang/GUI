@@ -28,6 +28,6 @@ public class VerticalLineSeparator extends JLabel {
 
 		g2.setColor(color);
 
-		g2.drawLine(0, 0, width, height);
+		g2.drawLine(0, 0, 0, height);
 	}
 }

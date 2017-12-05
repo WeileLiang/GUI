@@ -27,6 +27,7 @@ public class MyFrame extends JFrame {
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 

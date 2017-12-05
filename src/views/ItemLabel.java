@@ -19,26 +19,43 @@ public class ItemLabel extends JPanel {
 
 	private String text;
 	// 边长
-	public static final int side = MyFrame.WIDTH / 10;
+	private int side = MyFrame.WIDTH / 10;
 	// 内边距
-	public static final int padding = side / 15;
+	private int padding = side / 15;
 
 	private TransparentLabel label;
 
 	// 点击之后边框变白色，表示已选择状态
 	private boolean chosenState = false;
-	private Border chosenBorder = BorderFactory.createLineBorder(new Color(Constants.WINE_RED), 3);
+	private Border chosenBorder;
+
+	private int fontSize = 18;
 
 	public ItemLabel(String text) {
 		this(text, 1.f);
+	}
+
+	public ItemLabel(String text, float alpha, int side, int fontSize,int borderHeight) {
+		this.side = side;
+		padding = side / 15;
+		this.fontSize = fontSize;
+		this.text = text;
+		setBackground(null);
+		setOpaque(false);
+		label = new TransparentLabel(text, alpha, new Font("黑体", Font.BOLD, fontSize));
+		label.setBackground(new Color(Constants.WINE_RED));
+		chosenBorder = BorderFactory.createLineBorder(new Color(Constants.WINE_RED), borderHeight);
+		measureAndLayout();
 	}
 
 	public ItemLabel(String text, float alpha) {
 		this.text = text;
 		setBackground(null);
 		setOpaque(false);
-		label = new TransparentLabel(text, alpha, new Font("黑体", Font.BOLD, 18));
+		label = new TransparentLabel(text, alpha, new Font("黑体", Font.PLAIN, fontSize));
 		label.setBackground(new Color(Constants.WINE_RED));
+		
+		chosenBorder = BorderFactory.createLineBorder(new Color(Constants.WINE_RED), 3);
 		measureAndLayout();
 		// setListeners();
 	}
@@ -77,7 +94,7 @@ public class ItemLabel extends JPanel {
 
 	public void setChosenBorder(boolean chosen) {
 		chosenState = chosen;
-   		setBorder(chosen?chosenBorder:null);
+		setBorder(chosen ? chosenBorder : null);
 	}
 
 	public boolean getChosenState() {
