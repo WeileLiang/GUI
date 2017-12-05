@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 public class TransparentLabel extends JLabel {
 	private float alpha = .5f;
 	private String text;
-	private Font font = new Font("ºÚÌå", Font.BOLD, 23);
+	private Font font = new Font("ºÚÌå", Font.PLAIN, 23);
 
 	public TransparentLabel(String label, float alpha) {
 		super();

@@ -3,17 +3,18 @@ import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import main.MyFrame;
-import oracle.jrockit.jfr.JFR;
 import panels.CreatePanel;
-import panels.ItemInfoPanel;
+import views.HintTextField;
 import views.VerticalLineSeparator;
 
 public class Test extends JFrame {
@@ -22,7 +23,7 @@ public class Test extends JFrame {
 
 	public static void main(String[] args) {
 		Test frame = new Test();
-		frame.setSize(MyFrame.WIDTH, MyFrame.HEIGHT);
+		frame.setSize(300, 300);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -30,38 +31,23 @@ public class Test extends JFrame {
 	}
 
 	public Test() {
-		System.out.println(1);
 		setLayout(null);
-		getContentPane().setBackground(Color.GRAY);
-		JButton btn = new JButton("123");
-		btn.addActionListener(new ActionListener() {
 
+		getContentPane().setBackground(Color.GRAY);
+		
+		HintTextField field=new HintTextField();
+		field.setSize(100,50);
+		field.setBounds(10, 10, field.getWidth(), field.getHeight());
+		field.setTips("123");;
+		add(field);
+			addMouseListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				JDialog dialog = new JDialog();
-				CreatePanel panel = new CreatePanel(
-						Arrays.asList("JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB",
-								"JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB", "JOB"));
-				dialog.setLayout(null);
-				dialog.setSize(new Dimension(panel.getWidth(), panel.getHeight()));
-				panel.setBounds(0, 0, panel.getWidth(), panel.getHeight());
-				dialog.add(panel);
-				dialog.setModalityType(ModalityType.APPLICATION_MODAL);
-				dialog.setLocationRelativeTo(null);
-				dialog.setResizable(false);
-				dialog.setVisible(true);
+				super.mouseClicked(e);
+				field.setFocusable(false);
 			}
 		});
-
-		btn.setSize(100, 50);
-		btn.setBounds(100, 100, btn.getWidth(), btn.getHeight());
-		add(btn);
-		
-		VerticalLineSeparator separator=new VerticalLineSeparator(1, MyFrame.HEIGHT, Color.WHITE);
-		separator.setBounds(MyFrame.WIDTH*3/4,0,separator.getWidth(),separator.getHeight());
-		System.out.println(MyFrame.HEIGHT+" "+separator.getHeight());
-		add(separator);
 	}
 
 }

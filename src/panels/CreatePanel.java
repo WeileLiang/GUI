@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import adapter.NotifyListener;
 import main.MyFrame;
 import utils.AnimationUtil;
 import views.ItemLabel;
@@ -54,10 +55,13 @@ public class CreatePanel extends JPanel implements MouseListener{
 
 	private int itemCount = 5;
 
+	private NotifyListener notifyListener;
+	
 	public CreatePanel(List<String> names) {
 		this.itemNames = names;
 		initViews();
 		measureAndLayout();
+		setListeners();
 	}
 
 	public CreatePanel(List<String> names, int itemSize, int itemCount, int fontSize) {
@@ -76,7 +80,7 @@ public class CreatePanel extends JPanel implements MouseListener{
 		setBackground(Color.GRAY);
 
 		for (int i = 0; i < itemNames.size(); i++) {
-			items.add(new ItemLabel(itemNames.get(i), 1.f, itemSize, fontSize, 1));
+			items.add(new ItemLabel(itemNames.get(i), 1.f, itemSize, fontSize, 2));
 			states.add(false);
 		}
 
@@ -117,8 +121,8 @@ public class CreatePanel extends JPanel implements MouseListener{
 
 		}
 
-		VerticalLineSeparator separator = new VerticalLineSeparator(1, height, Color.white);
-		separator.setBounds(width * 3 / 4, 0, separator.getWidth(), separator.getHeight());
+		VerticalLineSeparator separator = new VerticalLineSeparator(3, height, Color.white);
+		separator.setBounds(width * 3 / 4-separator.getWidth(), 0, separator.getWidth(), separator.getHeight());
 		add(separator);
 	}
 
@@ -171,6 +175,7 @@ public class CreatePanel extends JPanel implements MouseListener{
 		if(component==allSelect) handleAllStates(true);
 		else if (component==notSelect) handleAllStates(false); 
 		else if (component==inverseSelect) inverseSelect(); 
+		else if(component==ensure&&notifyListener!=null) notifyListener.notifyParent(0); 
 	}
 
 	@Override
@@ -200,4 +205,28 @@ public class CreatePanel extends JPanel implements MouseListener{
 		
 	}
 	
+	
+	public CreatedProduct getNewProduct(){
+		List<String> jobs=new ArrayList<>();
+		for(int i=0;i<states.size();i++){
+			if(states.get(i)) jobs.add(itemNames.get(i));
+		}
+		
+		return new CreatedProduct("", jobs);
+	}
+	
+	public void setNotifyListener(NotifyListener notifyListener) {
+		this.notifyListener = notifyListener;
+	}
+	
+	class CreatedProduct{
+		String name;
+		List<String> jobs;
+		
+		public CreatedProduct(String name,List<String> jobs) {
+			// TODO Auto-generated constructor stub
+			this.name=name;
+			this.jobs=jobs;
+		}
+	}
 }

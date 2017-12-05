@@ -1,12 +1,11 @@
 package panels;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import adapter.ItemClickListener;
-import jdk.internal.dynalink.beans.StaticClass;
+import constant.Info;
 import utils.AnimationUtil;
 import utils.FileUtil;
 
@@ -18,8 +17,8 @@ public class CraftOperationPanel extends OperationPanel {
 
 	// 组件的名称集合
 	private List<String> itemNames;
-	// 组件文件的路径集合
-	private List<String> itemPaths;
+//	// 组件文件的路径集合
+//	private List<String> itemPaths;
 
 	public CraftOperationPanel(String tag) {
 		super(tag);
@@ -53,7 +52,7 @@ public class CraftOperationPanel extends OperationPanel {
 
 				} else {
 					AnimationUtil.doShrinkAnima(gridPanel.getKthItem(position));
-					FileUtil.openFile(itemPaths.get(position));
+					FileUtil.openFile(Info.JOBS_PATH+File.separator+itemNames.get(position)+".txt");
 				}
 
 			}
@@ -117,17 +116,7 @@ public class CraftOperationPanel extends OperationPanel {
 	 * 获取当前的组件文件名称和文件路径
 	 */
 	private void initRightItems() {
-		File jobsFile = new File(JOBS_PATH);
-
-		File[] files = jobsFile.listFiles();
-		itemNames = new ArrayList<>();
-		itemPaths = new ArrayList<>();
-
-		for (File file : files) {
-			itemNames.add(file.getName().split("\\.")[0]);
-			itemPaths.add(file.getAbsolutePath());
-		}
-
+		itemNames=Info.getJobNames();
 	}
 
 }
