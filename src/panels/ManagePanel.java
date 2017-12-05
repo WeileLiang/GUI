@@ -52,13 +52,15 @@ public class ManagePanel extends JPanel {
 		Font font = new Font("ºÚÌå", Font.PLAIN, 16);
 
 		for (JLabel label : labels) {
-			label.setOpaque(true);
-			label.setBackground(Color.LIGHT_GRAY);
+//			label.setOpaque(true);
+//			label.setBackground(Color.LIGHT_GRAY);
 			label.setForeground(Color.WHITE);
 			label.setFont(font);
 			label.setBorder(border);
 		}
 
+		deleteLabel.setOpaque(true);
+		deleteLabel.setBackground(Color.LIGHT_GRAY);
 		deleteLabel.setBackground(Color.RED);
 
 	}

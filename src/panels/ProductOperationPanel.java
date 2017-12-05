@@ -1,5 +1,6 @@
 package panels;
 
+import java.awt.Dimension;
 import java.awt.Dialog.ModalityType;
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +15,8 @@ import java.util.List;
 import javax.swing.JDialog;
 
 import adapter.ItemClickListener;
+import adapter.NotifyListener;
+import constant.Info;
 import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 import utils.AnimationUtil;
 import utils.FileUtil;
@@ -97,7 +100,7 @@ public class ProductOperationPanel extends OperationPanel {
 				// TODO Auto-generated method stub
 				switch (position) {
 				case 0:// Ìí¼Ó
-
+					showCreateDialog();
 					break;
 				case 1:// É¾³ý
 					break;
@@ -189,4 +192,27 @@ public class ProductOperationPanel extends OperationPanel {
 		dialog.setVisible(true);
 	}
 
+	private void showCreateDialog(){
+
+		// TODO Auto-generated method stub
+		JDialog dialog = new JDialog();
+		CreatePanel panel = new CreatePanel(Info.getJobNames());
+		dialog.setLayout(null);
+		dialog.setSize(new Dimension(panel.getWidth(), panel.getHeight()));
+		panel.setBounds(0, 0, panel.getWidth(), panel.getHeight());
+		panel.setNotifyListener(new NotifyListener() {
+			
+			@Override
+			public void notifyParent(int signalType) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		dialog.add(panel);
+		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+		dialog.setLocationRelativeTo(null);
+		dialog.setResizable(false);
+		dialog.setVisible(true);
+	
+	}
 }
