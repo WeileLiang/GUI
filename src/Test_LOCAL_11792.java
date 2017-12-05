@@ -1,9 +1,14 @@
 import java.awt.Color;
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-<<<<<<< Updated upstream
 
 import main.MyFrame;
 import oracle.jrockit.jfr.JFR;
@@ -17,7 +22,7 @@ public class Test extends JFrame {
 
 	public static void main(String[] args) {
 		Test frame = new Test();
-		frame.setSize(300, 300);
+		frame.setSize(MyFrame.WIDTH, MyFrame.HEIGHT);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -25,8 +30,8 @@ public class Test extends JFrame {
 	}
 
 	public Test() {
+		System.out.println(1);
 		setLayout(null);
-
 		getContentPane().setBackground(Color.GRAY);
 		JButton btn = new JButton("123");
 		btn.addActionListener(new ActionListener() {

@@ -10,6 +10,9 @@ import oracle.jrockit.jfr.JFR;
 import panels.CreatePanel;
 import panels.ItemInfoPanel;
 import views.VerticalLineSeparator;
+=======
+import javax.swing.JScrollPane;
+>>>>>>> Stashed changes
 
 public class Test extends JFrame {
 
@@ -26,7 +29,7 @@ public class Test extends JFrame {
 
 	public Test() {
 		setLayout(null);
-
+<<<<<<< Updated upstream
 		getContentPane().setBackground(Color.GRAY);
 		JButton btn = new JButton("123");
 		btn.addActionListener(new ActionListener() {
@@ -57,6 +60,17 @@ public class Test extends JFrame {
 		separator.setBounds(MyFrame.WIDTH*3/4,0,separator.getWidth(),separator.getHeight());
 		System.out.println(MyFrame.HEIGHT+" "+separator.getHeight());
 		add(separator);
+=======
+
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+
+		panel.setPreferredSize(new Dimension(300, 500));
+		JScrollPane scrollPane = new JScrollPane(panel);
+		scrollPane.setBounds(0, 0, 300, 300);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		add(scrollPane);
+>>>>>>> Stashed changes
 	}
 
 }

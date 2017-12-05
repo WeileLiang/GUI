@@ -96,7 +96,7 @@ public class ProductOperationPanel extends OperationPanel {
 			public void onItemClick(int position) {
 				// TODO Auto-generated method stub
 				switch (position) {
-				case 0:// µ¼Èë
+				case 0:// Ìí¼Ó
 
 					break;
 				case 1:// É¾³ý
