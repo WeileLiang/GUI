@@ -25,16 +25,14 @@ public class Test extends JFrame {
 	static int i = 0;
 
 	public static void main(String[] args) {
-		Test frame = new Test();
-		frame.setSize(300, 300);
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setVisible(true);
-
-//		String fileName=Info.PRODUCT_PATH+File.separator+"pro333.txt";
-//		File file=FileUtil.createFile(fileName);
-//		System.out.println(file.exists());
-//		FileUtil.writeContent2File(file, "233");
+//		Test frame = new Test();
+//		frame.setSize(300, 300);
+//		frame.setLocationRelativeTo(null);
+//		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		frame.setVisible(true);
+//
+//		String fileName=Info.PRODUCT_PATH+File.separator+"pro233.txt";
+//		FileUtil.deleteFile(fileName);
 		
 	}
 

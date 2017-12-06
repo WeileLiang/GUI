@@ -2,6 +2,7 @@ package panels;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -14,6 +15,7 @@ import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
 import adapter.ItemClickListener;
 import main.MyFrame;
 import utils.AnimationUtil;
+import utils.FileUtil;
 import views.ItemLabel;
 import views.TransparentLabel;
 
@@ -188,6 +190,18 @@ public class GridPanel extends JPanel {
 		}
 	}
 
+	public void deleteSelectFiles(String parentFilePath){
+		for(int i=0;i<chosenStates.size();i++){
+			if(chosenStates.get(i)){
+				String filePath=parentFilePath+File.separator+datas.get(i)+".txt";
+				FileUtil.deleteFile(filePath);
+			}
+		}
+	}
+	
+	/**
+	 * 添加、删除后重新布局
+	 */
 	public void reLayout() {
 		for(ItemLabel label:labels) {
 			remove(label);

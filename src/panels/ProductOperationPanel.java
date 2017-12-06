@@ -104,6 +104,7 @@ public class ProductOperationPanel extends OperationPanel {
 					showCreateDialog();
 					break;
 				case 1:// É¾³ý
+					deleteSelectedFiles();
 					break;
 				case 2:// È«Ñ¡
 					gridPanel.handleAllStates(true);
@@ -131,6 +132,7 @@ public class ProductOperationPanel extends OperationPanel {
 
 	}
 
+	
 	private void showItemInfoDialog(int position) {
 		ItemInfoPanel panel = new ItemInfoPanel(itemNames.get(position), jobsItems.get(position));
 		JDialog dialog = new JDialog();
@@ -182,6 +184,15 @@ public class ProductOperationPanel extends OperationPanel {
 
 	}
 
+	private void deleteSelectedFiles(){
+		gridPanel.deleteSelectFiles(Info.PRODUCT_PATH);
+		itemNames.clear();
+		jobsItems.clear();
+		itemNames.addAll(Info.getProductNames(true));
+		jobsItems.addAll(Info.getJobItemsOfPro());
+		gridPanel.reLayout();
+	}
+	
 	private void createNewProductFile(CreatedProduct product) {
 		String fileName = Info.PRODUCT_PATH + File.separator + product.name + ".txt";
 		File file = FileUtil.createFile(fileName);
