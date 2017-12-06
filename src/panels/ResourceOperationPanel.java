@@ -18,6 +18,8 @@ import adapter.ItemClickListener;
 import adapter.NotifyListener;
 import constant.Info;
 import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
+import panels.ProductCreatePanel.CreatedProduct;
+import panels.ResourceCreatePanel.CreatedJobshop;
 import utils.AnimationUtil;
 import utils.FileUtil;
 
@@ -104,6 +106,7 @@ public class ResourceOperationPanel extends OperationPanel {
 					showCreateDialog();
 					break;
 				case 1:// 删除
+					deleteSelectedFiles();
 					break;
 				case 2:// 全选
 					gridPanel.handleAllStates(true);
@@ -126,43 +129,9 @@ public class ResourceOperationPanel extends OperationPanel {
 	 * 读取products文件夹下的产品信息
 	 */
 	private void initGridList() {
-		itemNames = new ArrayList<String>();
-		machineItems = new ArrayList<>();
+		itemNames = Info.getJobshopNames(false);
+		machineItems = Info.getMachinesOfJobshop();
 
-		File file = new File(JOBSHOPS_PATH);
-		if (!file.exists())
-			return;
-
-		File[] jobShops = file.listFiles();
-
-		for (int i = 0; i < jobShops.length; i++) {
-			itemNames.add(jobShops[i].getName().split("\\.")[0]);
-			List<String> machines = new ArrayList<>();
-			BufferedReader reader = null;
-			try {
-				reader = new BufferedReader(new InputStreamReader(new FileInputStream(jobShops[i].getAbsolutePath())));
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					machines.add(line.trim());
-				}
-
-				machineItems.add(machines);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if (reader != null)
-					try {
-						reader.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}
-		}
 
 	}
 	
@@ -184,7 +153,7 @@ public class ResourceOperationPanel extends OperationPanel {
 
 		// TODO Auto-generated method stub
 		JDialog dialog = new JDialog();
-		ResourceCreatePanel panel = new ResourceCreatePanel(Info.getJobNames());
+		ResourceCreatePanel panel = new ResourceCreatePanel(Info.getMachineNames());
 		dialog.setLayout(null);
 		dialog.setSize(new Dimension(panel.getWidth(), panel.getHeight()));
 		panel.setBounds(0, 0, panel.getWidth(), panel.getHeight());
@@ -193,6 +162,7 @@ public class ResourceOperationPanel extends OperationPanel {
 			@Override
 			public void notifyParent(int signalType) {
 //				createNewProductFile(panel.getNewProduct());
+				createNewJobshopFile(panel.getNewJobshop());
 				dialog.dispose();
 			}
 		});
@@ -202,6 +172,28 @@ public class ResourceOperationPanel extends OperationPanel {
 		dialog.setResizable(false);
 		dialog.setVisible(true);
 
+	}
+	
+	private void deleteSelectedFiles(){
+		gridPanel.deleteSelectFiles(Info.JOBSHOPS_PATH);
+		itemNames.clear();
+		machineItems.clear();
+		itemNames.addAll(Info.getJobshopNames(true));
+		machineItems.addAll(Info.getMachinesOfJobshop());
+		gridPanel.reLayout();
+	}
+	
+	private void createNewJobshopFile(CreatedJobshop jobshop) {
+		String fileName = Info.JOBSHOPS_PATH + File.separator + jobshop.name + ".txt";
+		File file = FileUtil.createFile(fileName);
+		FileUtil.writeContent2File(file, jobshop.toString());
+		
+//		initGridList();
+		itemNames.clear();
+		machineItems.clear();
+		itemNames.addAll(Info.getJobshopNames(true));
+		machineItems.addAll(Info.getMachinesOfJobshop());
+		gridPanel.reLayout();
 	}
 	
 }

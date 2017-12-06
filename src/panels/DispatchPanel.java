@@ -1,51 +1,48 @@
 package panels;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.util.Arrays;
-import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import constant.Info;
 import main.MyFrame;
+import views.VerticalLineSeparator;
 
 public class DispatchPanel extends JPanel{
-	private int width=MyFrame.WIDTH*3/4;
-	private int height=MyFrame.HEIGHT/5;
-	private int marginLR=width/20;
-	private int marginTB=height/3;
+
+	private int width=MyFrame.WIDTH;
+	private int height=MyFrame.HEIGHT;
 	
-	private JLabel totalTimeLabel=new JLabel("所需总时间: 317s");
-	private JLabel restTimeLabel=new JLabel("剩余时间: 303s");
-	
-	List<JLabel> labels=Arrays.asList(totalTimeLabel,restTimeLabel);
+	private LeftSidePanel leftSidePanel;
+	private TimePanel timePanel;
+	private TimeLinePanel timeLinePanel;
 	
 	public DispatchPanel(){
 		setSize(width,height);
 		setLayout(null);
-		setBackground(Color.GRAY);
-//		setOpaque(false);
 		
 		initViews();
+		measureAndLayout();
 	}
 	
 	private void initViews(){
-		Font font1=new Font("黑体",Font.PLAIN,28);
-		Font font2=new Font("黑体",Font.PLAIN,25);
-		
-		for(JLabel label:labels){
-			label.setForeground(Color.WHITE);
-			label.setOpaque(false);
-		}
-		
-		totalTimeLabel.setBounds(marginLR,marginTB,width,height/2);
-		totalTimeLabel.setFont(font1);
-		restTimeLabel.setBounds(marginLR,marginTB+height/2,width,height/5);
-		restTimeLabel.setFont(font2);
-		
-		add(totalTimeLabel);
-		add(restTimeLabel);
+		leftSidePanel=new LeftSidePanel("调度仿真", Info.getJobshopNames(false));
+		timeLinePanel=new TimeLinePanel();
+		timePanel=new TimePanel();
 	}
 	
+	private void measureAndLayout(){
+		leftSidePanel.setBounds(0, 0, leftSidePanel.getWidth(), leftSidePanel.getHeight());
+		VerticalLineSeparator separator=new VerticalLineSeparator(3, height, Color.WHITE);
+		separator.setBounds(leftSidePanel.getWidth()-separator.getWidth(),0,separator.getWidth(),separator.getHeight());
+		
+		timePanel.setBounds(leftSidePanel.getWidth(), 0, timePanel.getWidth(), timePanel.getHeight());
+		timeLinePanel.setBounds(leftSidePanel.getWidth(), timePanel.getHeight(), timeLinePanel.getWidth(), timeLinePanel.getHeight());
+		
+		add(separator);
+		add(leftSidePanel);
+		add(timePanel);
+		add(timeLinePanel);
+		
+	}
 }

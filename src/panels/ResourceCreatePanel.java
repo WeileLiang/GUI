@@ -21,7 +21,7 @@ public class ResourceCreatePanel extends CreatePanel {
 			return false;
 		}
 
-		if (Info.getProductNames(false).contains(nameField.getText())) {
+		if (Info.getJobshopNames(false).contains(nameField.getText())) {
 			errorLabel.setText("已存在该车间！");
 			return false;
 		}
@@ -52,13 +52,13 @@ public class ResourceCreatePanel extends CreatePanel {
 	}
 
 	public CreatedJobshop getNewJobshop() {
-		List<String> jobs = new ArrayList<>();
+		List<String> machines = new ArrayList<>();
 		for (int i = 0; i < states.size(); i++) {
 			if (states.get(i))
-				jobs.add(Info.getJobNames().get(i));
+				machines.add(Info.getMachineNames().get(i));
 		}
 
-		return new CreatedJobshop(nameField.getText(), jobs);
+		return new CreatedJobshop(nameField.getText(), machines);
 	}
 
 	class CreatedJobshop {
@@ -70,14 +70,14 @@ public class ResourceCreatePanel extends CreatePanel {
 			this.name = name;
 			this.machines = machines;
 		}
-		
+
 		@Override
 		public String toString() {
 			// TODO Auto-generated method stub
-			StringBuilder sb=new StringBuilder();
-			for(int i=0;i<machines.size();i++)
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < machines.size(); i++)
 				sb.append(machines.get(i)).append('\n');
-			
+
 			return sb.toString().trim();
 		}
 	}

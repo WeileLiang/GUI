@@ -11,6 +11,7 @@ import adapter.ItemClickListener;
 import adapter.NotifyListener;
 import panels.ChoicePanel;
 import panels.CraftOperationPanel;
+import panels.DispatchPanel;
 import panels.LoginPanel;
 import panels.OperationPanel;
 import panels.ProductOperationPanel;
@@ -41,6 +42,7 @@ public class MyFrame extends JFrame {
 
 	private OperationPanel operationPanel;
 	private OperationPanel[] operationPanels = new OperationPanel[4];
+	private DispatchPanel dispatchPanel;
 
 	public MyFrame() {
 
@@ -97,10 +99,19 @@ public class MyFrame extends JFrame {
 			public void onItemClick(int position) {
 				// TODO Auto-generated method stub
 				layeredPane.remove(choicePanel);
-				addOperationPanel(position);
+				if (position == 3)
+					addDispatchPanel();
+				else
+					addOperationPanel(position);
 			}
 		});
 
+	}
+
+	private void addDispatchPanel() {
+		dispatchPanel = new DispatchPanel();
+		dispatchPanel.setBounds(0, 0, dispatchPanel.getWidth(), dispatchPanel.getHeight());
+		layeredPane.add(dispatchPanel, 0);
 	}
 
 	private void addOperationPanel(int position) {
