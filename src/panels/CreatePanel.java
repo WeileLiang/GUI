@@ -18,6 +18,7 @@ import javax.swing.border.Border;
 import adapter.NotifyListener;
 import main.MyFrame;
 import utils.AnimationUtil;
+import views.HintTextField;
 import views.ItemLabel;
 import views.VerticalLineSeparator;
 
@@ -27,7 +28,7 @@ import views.VerticalLineSeparator;
  * @author Robot
  *
  */
-public class CreatePanel extends JPanel implements MouseListener{
+public abstract class CreatePanel extends JPanel implements MouseListener {
 	private int width = MyFrame.WIDTH * 3 / 4;
 	private int height = MyFrame.HEIGHT * 5 / 6;
 	private int gapVer = height / 33;
@@ -41,12 +42,23 @@ public class CreatePanel extends JPanel implements MouseListener{
 	private JLabel allSelect = new JLabel("全选", JLabel.CENTER);
 	private JLabel notSelect = new JLabel("全不选", JLabel.CENTER);
 	private JLabel inverseSelect = new JLabel("反选", JLabel.CENTER);
-	private JLabel ensure = new JLabel("确定", JLabel.CENTER);
+	protected JLabel ensure = new JLabel("确定", JLabel.CENTER);
+
+	//创建的种类（产品/车间）
+	protected String createType;
+	//组件的种类（零件/设备）
+	protected String itemType;
+	//输入框的初始提示
+	protected String tips;
+	// 要创建的名字
+	protected HintTextField nameField = new HintTextField();
+	// 操作不规范的提示
+	protected JLabel errorLabel = new JLabel();
 
 	private List<JLabel> btns = Arrays.asList(allSelect, notSelect, inverseSelect, ensure);
 
 	private List<ItemLabel> items = new ArrayList<>();
-	private List<Boolean> states = new ArrayList<>();
+	protected List<Boolean> states = new ArrayList<>();
 	private List<String> itemNames = new ArrayList<>();
 
 	// 按钮的宽高
@@ -55,10 +67,11 @@ public class CreatePanel extends JPanel implements MouseListener{
 
 	private int itemCount = 5;
 
-	private NotifyListener notifyListener;
-	
+	protected NotifyListener notifyListener;
+
 	public CreatePanel(List<String> names) {
 		this.itemNames = names;
+		init();
 		initViews();
 		measureAndLayout();
 		setListeners();
@@ -69,7 +82,9 @@ public class CreatePanel extends JPanel implements MouseListener{
 		this.itemSize = itemSize;
 		this.itemCount = itemCount;
 		this.fontSize = fontSize;
+		init();
 		initViews();
+		nameField.setTips("123");
 		measureAndLayout();
 		setListeners();
 	}
@@ -87,6 +102,12 @@ public class CreatePanel extends JPanel implements MouseListener{
 		Border border = BorderFactory.createLineBorder(Color.WHITE, 1);
 		Font font = new Font("黑体", Font.PLAIN, 15);
 
+		nameField.setFont(font);
+		nameField.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		
+		errorLabel.setFont(new Font("黑体", Font.PLAIN, 12));
+		errorLabel.setForeground(Color.WHITE);
+
 		for (JLabel label : btns) {
 			label.setOpaque(true);
 			label.setBackground(Color.GRAY);
@@ -98,7 +119,18 @@ public class CreatePanel extends JPanel implements MouseListener{
 
 	private void measureAndLayout() {
 		int btnX = width - (width / 4 - btnWidth) / 2 - btnWidth - width / 233;
-		int btnY = marginTB * 2;
+		int btnY = marginTB * 3 / 2;
+
+		nameField.setSize(btnWidth, btnHeight);
+		nameField.setBounds(btnX, btnY, nameField.getWidth(), nameField.getHeight());
+		nameField.setTips(tips);
+		btnY += nameField.getHeight();
+		errorLabel.setSize(btnWidth, btnHeight);
+		errorLabel.setBounds(btnX, btnY, errorLabel.getWidth(), errorLabel.getHeight());
+		add(nameField);
+		add(errorLabel);
+
+		btnY += errorLabel.getHeight() + marginTB / 3;
 		for (JLabel label : btns) {
 			label.setSize(btnWidth, btnHeight);
 			label.setBounds(btnX, btnY, label.getWidth(), label.getHeight());
@@ -122,29 +154,53 @@ public class CreatePanel extends JPanel implements MouseListener{
 		}
 
 		VerticalLineSeparator separator = new VerticalLineSeparator(3, height, Color.white);
-		separator.setBounds(width * 3 / 4-separator.getWidth(), 0, separator.getWidth(), separator.getHeight());
+		separator.setBounds(width * 3 / 4 - separator.getWidth(), 0, separator.getWidth(), separator.getHeight());
 		add(separator);
 	}
 
 	private void setListeners() {
-		for(int i=0;i<items.size();i++) {
-			final int position=i;
+		for (int i = 0; i < items.size(); i++) {
+			final int position = i;
 			items.get(i).addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub
 					super.mouseClicked(e);
-					boolean state=states.get(position);
+					nameField.setFocusable(false);
+					boolean state = states.get(position);
 					states.set(position, !state);
 					items.get(position).setChosenBorder(!state);
 				}
 			});
 		}
-		
-		for(JLabel btn:btns)
+
+		for (JLabel btn : btns)
 			btn.addMouseListener(this);
-		
+
+		this.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				super.mouseClicked(e);
+				nameField.setFocusable(false);
+			}
+		});
 	}
+
+	/**
+	 * 检查合法性，例如是否输入了名称、进行了选择
+	 * 
+	 * @return
+	 */
+	public abstract boolean checkIllegality();
+	/**
+	 * 初始化，如createType等
+	 */
+	public abstract void init();
+	/**
+	 * 为确定按钮设置点击事件
+	 */
+	public abstract void setEnsureListener();
 	
 	/**
 	 * 处理全部item的状态
@@ -170,63 +226,50 @@ public class CreatePanel extends JPanel implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		JComponent component=(JComponent) e.getSource();
+		nameField.setFocusable(false);
+		
+		JComponent component = (JComponent) e.getSource();
 		AnimationUtil.doShrinkAnima(component);
-		if(component==allSelect) handleAllStates(true);
-		else if (component==notSelect) handleAllStates(false); 
-		else if (component==inverseSelect) inverseSelect(); 
-		else if(component==ensure&&notifyListener!=null) notifyListener.notifyParent(0); 
+		if (component == allSelect)
+			handleAllStates(true);
+		else if (component == notSelect)
+			handleAllStates(false);
+		else if (component == inverseSelect)
+			inverseSelect();
+		else if (component == ensure)
+			setEnsureListener();
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		JLabel label=(JLabel) e.getSource();
+		JLabel label = (JLabel) e.getSource();
 		label.setBackground(Color.LIGHT_GRAY);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		JLabel label=(JLabel) e.getSource();
+		JLabel label = (JLabel) e.getSource();
 		label.setBackground(null);
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
-	public CreatedProduct getNewProduct(){
-		List<String> jobs=new ArrayList<>();
-		for(int i=0;i<states.size();i++){
-			if(states.get(i)) jobs.add(itemNames.get(i));
-		}
-		
-		return new CreatedProduct("", jobs);
-	}
-	
+
 	public void setNotifyListener(NotifyListener notifyListener) {
 		this.notifyListener = notifyListener;
 	}
-	
-	class CreatedProduct{
-		String name;
-		List<String> jobs;
-		
-		public CreatedProduct(String name,List<String> jobs) {
-			// TODO Auto-generated constructor stub
-			this.name=name;
-			this.jobs=jobs;
-		}
-	}
+
+
 }

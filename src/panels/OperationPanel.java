@@ -91,6 +91,7 @@ public abstract class OperationPanel extends JPanel {
 			notifyListener.notifyParent(SIGNAL_REMOVE);
 			leftSidePanel.setBounds(-leftSidePanel.getWidth(), 0, leftSidePanel.getWidth(), leftSidePanel.getHeight());
 			gridPanel.setAlpha(.0f);
+			gridPanel.clearChosenStates();
 		}
 
 	}

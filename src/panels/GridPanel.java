@@ -49,7 +49,7 @@ public class GridPanel extends JPanel {
 		this.datas = datas;
 
 		initViews();
-		measureAndLayout();
+		measureAndLayout(.0f);
 		setListeners();
 	}
 
@@ -61,12 +61,12 @@ public class GridPanel extends JPanel {
 		setOpaque(false);
 	}
 
-	private void measureAndLayout() {
+	private void measureAndLayout(float alpha) {
 		labels = new ArrayList<ItemLabel>();
 		chosenStates = new ArrayList<>();
 		int curX = marginLR, curY = marginTB;
 		for (int i = 0; i < datas.size(); i++) {
-			ItemLabel label = new ItemLabel(datas.get(i), .0f);
+			ItemLabel label = new ItemLabel(datas.get(i), alpha);
 
 			label.setBounds(curX, curY, label.getWidth(), label.getHeight());
 			labels.add(label);
@@ -188,6 +188,19 @@ public class GridPanel extends JPanel {
 		}
 	}
 
+	public void reLayout() {
+		for(ItemLabel label:labels) {
+			remove(label);
+		}
+		
+		labels.clear();
+		chosenStates.clear();
+		measureAndLayout(1.f);
+		setListeners();
+		
+		repaint();
+	}
+	
 	public void setChosenState(int position) {
 		boolean state = chosenStates.get(position);
 		chosenStates.set(position, !state);
