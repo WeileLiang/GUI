@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Arrays;
 
 import javax.swing.JButton;
@@ -12,8 +13,10 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import constant.Info;
 import main.MyFrame;
 import panels.CreatePanel;
+import utils.FileUtil;
 import views.HintTextField;
 import views.VerticalLineSeparator;
 
@@ -28,6 +31,11 @@ public class Test extends JFrame {
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setVisible(true);
 
+//		String fileName=Info.PRODUCT_PATH+File.separator+"pro333.txt";
+//		File file=FileUtil.createFile(fileName);
+//		System.out.println(file.exists());
+//		FileUtil.writeContent2File(file, "233");
+		
 	}
 
 	public Test() {
@@ -38,7 +46,7 @@ public class Test extends JFrame {
 		HintTextField field=new HintTextField();
 		field.setSize(100,50);
 		field.setBounds(10, 10, field.getWidth(), field.getHeight());
-		field.setTips("123");;
+		field.setTips("123");
 		add(field);
 			addMouseListener(new MouseAdapter() {
 			@Override

@@ -18,6 +18,7 @@ import adapter.ItemClickListener;
 import adapter.NotifyListener;
 import constant.Info;
 import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
+import panels.ProductCreatePanel.CreatedProduct;
 import utils.AnimationUtil;
 import utils.FileUtil;
 
@@ -125,43 +126,8 @@ public class ProductOperationPanel extends OperationPanel {
 	 * 读取products文件夹下的产品信息
 	 */
 	private void initGridList() {
-		itemNames = new ArrayList<String>();
-		jobsItems = new ArrayList<>();
-
-		File file = new File(PRODUCT_PATH);
-		if (!file.exists())
-			return;
-
-		File[] products = file.listFiles();
-
-		for (int i = 0; i < products.length; i++) {
-			itemNames.add(products[i].getName().split("\\.")[0]);
-			List<String> jobs = new ArrayList<>();
-			BufferedReader reader = null;
-			try {
-				reader = new BufferedReader(new InputStreamReader(new FileInputStream(products[i].getAbsolutePath())));
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					jobs.add(line.trim());
-				}
-
-				jobsItems.add(jobs);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if (reader != null)
-					try {
-						reader.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}
-		}
+		itemNames = Info.getProductNames(false);
+		jobsItems = Info.getJobItemsOfPro();
 
 	}
 
@@ -192,20 +158,20 @@ public class ProductOperationPanel extends OperationPanel {
 		dialog.setVisible(true);
 	}
 
-	private void showCreateDialog(){
+	private void showCreateDialog() {
 
 		// TODO Auto-generated method stub
 		JDialog dialog = new JDialog();
-		CreatePanel panel = new CreatePanel(Info.getJobNames());
+		ProductCreatePanel panel = new ProductCreatePanel(Info.getJobNames());
 		dialog.setLayout(null);
 		dialog.setSize(new Dimension(panel.getWidth(), panel.getHeight()));
 		panel.setBounds(0, 0, panel.getWidth(), panel.getHeight());
 		panel.setNotifyListener(new NotifyListener() {
-			
+
 			@Override
 			public void notifyParent(int signalType) {
-				// TODO Auto-generated method stub
-				
+				createNewProductFile(panel.getNewProduct());
+				dialog.dispose();
 			}
 		});
 		dialog.add(panel);
@@ -213,6 +179,20 @@ public class ProductOperationPanel extends OperationPanel {
 		dialog.setLocationRelativeTo(null);
 		dialog.setResizable(false);
 		dialog.setVisible(true);
-	
+
 	}
+
+	private void createNewProductFile(CreatedProduct product) {
+		String fileName = Info.PRODUCT_PATH + File.separator + product.name + ".txt";
+		File file = FileUtil.createFile(fileName);
+		FileUtil.writeContent2File(file, product.toString());
+		
+//		initGridList();
+		itemNames.clear();
+		jobsItems.clear();
+		itemNames.addAll(Info.getProductNames(true));
+		jobsItems.addAll(Info.getJobItemsOfPro());
+		gridPanel.reLayout();
+	}
+
 }

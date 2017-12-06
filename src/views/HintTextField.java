@@ -21,7 +21,6 @@ public class HintTextField extends JTextField implements FocusListener{
 				super.mouseClicked(e);
 				setFocusable(true);
 				requestFocus();
-				System.out.println(123);
 			}
 		});
 	}
@@ -31,6 +30,10 @@ public class HintTextField extends JTextField implements FocusListener{
 		setFocusable(false);
 		setText(tips);
 		setForeground(Color.LIGHT_GRAY);
+	}
+	
+	public boolean isEmpty() {
+		return getText().equals(tips)||getText().equals("");
 	}
 	
 	@Override
