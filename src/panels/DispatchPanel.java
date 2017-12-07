@@ -90,7 +90,6 @@ public class DispatchPanel extends JPanel {
 			public void run() {
 				// TODO Auto-generated method stub
 				float curAlpha = (float) (initAlpha + (1 - Math.cos(Math.PI / 2 * curTime / duration)) * distance);
-				System.out.println(curAlpha);
 				alphaPanel.setAlpha(curAlpha);
 
 				curTime += period;

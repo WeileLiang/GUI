@@ -12,7 +12,7 @@ import main.MyFrame;
 
 public class TimePanel extends JPanel{
 	private int width=MyFrame.WIDTH*3/4;
-	private int height=MyFrame.HEIGHT/5;
+	private int height=MyFrame.HEIGHT/6;
 	private int marginLR=width/20;
 	private int marginTB=height/4;
 	
