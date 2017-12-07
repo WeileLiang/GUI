@@ -95,7 +95,7 @@ public class LeftSidePanel extends JPanel {
 			// repaint();
 			labels.add(label);
 		}
-		
+
 		setSelectedItem(0);
 	}
 
@@ -125,7 +125,10 @@ public class LeftSidePanel extends JPanel {
 				// TODO Auto-generated method stub
 				super.mouseClicked(e);
 				returnLabel.setForeground(Color.WHITE);
-				((OperationPanel) getParent()).closeMyself();
+				if (getParent() instanceof OperationPanel)
+					((OperationPanel) getParent()).closeMyself();
+				else if (getParent() instanceof DispatchPanel)
+					((DispatchPanel) getParent()).closeMyself();
 			}
 		});
 
@@ -137,7 +140,7 @@ public class LeftSidePanel extends JPanel {
 				public void mouseClicked(MouseEvent e) {
 					// TODO Auto-generated method stub
 					super.mouseClicked(e);
-					
+
 					setSelectedItem(position);
 					if (itemClickListener != null)
 						itemClickListener.onItemClick(position);
@@ -146,12 +149,12 @@ public class LeftSidePanel extends JPanel {
 		}
 
 	}
-	
+
 	private void setSelectedItem(int position) {
 		clearClickedState();
 		labels.get(position).setBackground(new Color(Constants.LIGHT_GRAY));
 	}
-	
+
 	// 把之前点击的Item的背景色恢复
 	private void clearClickedState() {
 		for (JLabel label : labels)

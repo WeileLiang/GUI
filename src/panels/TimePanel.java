@@ -14,7 +14,7 @@ public class TimePanel extends JPanel{
 	private int width=MyFrame.WIDTH*3/4;
 	private int height=MyFrame.HEIGHT/5;
 	private int marginLR=width/20;
-	private int marginTB=height/3;
+	private int marginTB=height/4;
 	
 	private JLabel totalTimeLabel=new JLabel("所需总时间: 317s");
 	private JLabel restTimeLabel=new JLabel("剩余时间: 303s");

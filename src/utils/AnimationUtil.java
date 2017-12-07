@@ -12,8 +12,8 @@ public class AnimationUtil {
 
 	public static final int SHRINK_TIME = 100;
 
-	public static final int SLIDE_TIME = 250;
-	public static final int REBOUND_TIME = 500;
+	public static final int SLIDE_TIME = 350;
+	public static final int REBOUND_TIME = 600;
 
 	/**
 	 * »¬¶¯¶¯»­

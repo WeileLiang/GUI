@@ -21,8 +21,9 @@ public class TransparentPanel extends JPanel {
 	
 	public void setAlpha(float alpha) {
 		this.alpha = alpha;
-		if (isVisible())
-			paintImmediately(getBounds());
+		repaint();
+//		if (isVisible())
+//			paintImmediately(getBounds());
 	}
 
 	protected void paintComponent(Graphics g) {
