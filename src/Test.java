@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 import main.MyFrame;
+import views.TimeLineItem;
 import views.TransparentPanel;
 
 public class Test extends JFrame {
@@ -32,44 +34,9 @@ public class Test extends JFrame {
 
 	public Test() {
 		setLayout(null);
-
-		JLayeredPane layeredPane = getLayeredPane();
-		TransparentPanel panel = new TransparentPanel(1.0f);
-		panel.setBackground(Color.GRAY);
-
-		panel.setBounds(0, 0, MyFrame.WIDTH, MyFrame.HEIGHT);
-
-		JLabel label = new JLabel("AAA");
-		label.setFont(new Font("ºÚÌå", Font.BOLD, 33));
-		label.setForeground(Color.WHITE);
-		label.setBounds(200, 200, 100, 50);
-		label.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				super.mouseClicked(e);
-				System.out.println(333);
-			}
-		});
-
-		layeredPane.add(label, 1);
-//		layeredPane.add(panel, 0);
-//		Timer timer = new Timer();
-//		timer.scheduleAtFixedRate(new TimerTask() {
-//
-//			@Override
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				System.out.println("cur: "+alpha);
-//				panel.setAlpha(alpha);
-//				alpha -= .1f;
-//				if (alpha < .0f) {
-//					panel.setAlpha(.0f);
-//					timer.cancel();
-//					System.out.println(123);
-//				}
-//			}
-//		}, 100, 20);
+		TimeLineItem item = new TimeLineItem("Machine1", Arrays.asList(new int[] { 0, 2 }, new int[] { 6, 24 }));
+		item.setBounds(100, 100, item.getWidth(), item.getHeight());
+		add(item);
 	}
 
 }
