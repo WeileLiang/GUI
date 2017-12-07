@@ -109,9 +109,20 @@ public class MyFrame extends JFrame {
 	}
 
 	private void addDispatchPanel() {
-		dispatchPanel = new DispatchPanel();
-		dispatchPanel.setBounds(0, 0, dispatchPanel.getWidth(), dispatchPanel.getHeight());
-		layeredPane.add(dispatchPanel, 0);
+		if(dispatchPanel==null) {
+			dispatchPanel = new DispatchPanel();
+			dispatchPanel.setBounds(0, 0, dispatchPanel.getWidth(), dispatchPanel.getHeight());
+			layeredPane.add(dispatchPanel, 0);
+			dispatchPanel.setNotifyListener(new NotifyListener() {
+				
+				@Override
+				public void notifyParent(int signalType) {
+					// TODO Auto-generated method stub
+					layeredPane.remove(dispatchPanel);
+					readdChoicePanel();
+				}
+			});
+		}else readdDispatchPanel();
 	}
 
 	private void addOperationPanel(int position) {
@@ -151,6 +162,12 @@ public class MyFrame extends JFrame {
 		layeredPane.add(operationPanels[position], 0);
 		operationPanels[position].doReboundSlideInAnim();
 		operationPanels[position].doAlpahInAima();
+	}
+	
+	public void readdDispatchPanel() {
+		layeredPane.add(dispatchPanel, 0);
+		dispatchPanel.doReboundSlideInAnim();
+		dispatchPanel.doAlphaOutAnim();
 	}
 
 	public void readdChoicePanel() {
