@@ -26,7 +26,7 @@ public class TimeLinePanel extends JPanel {
 
 	private Font font = new Font("ºÚÌå", Font.PLAIN, 18);
 
-	List<List<int[]>> chips = new ArrayList<List<int[]>>();
+	List<List<int[]>> timeLines = new ArrayList<List<int[]>>();
 	TimeLineItem[] items;
 
 	public TimeLinePanel() {
@@ -35,30 +35,40 @@ public class TimeLinePanel extends JPanel {
 		setBackground(Color.GRAY);
 		// setOpaque(false);
 
-		chips.add(Arrays.asList(new int[] { 0, 2 }, new int[] { 6, 24 }));
-		chips.add(Arrays.asList(new int[] { 0, 12 }, new int[] { 27, 44 }));
-		chips.add(Arrays.asList(new int[] { 1, 18 }));
-		chips.add(Arrays.asList(new int[] { 0, 1 }, new int[] { 27, 44 }));
-		chips.add(Arrays.asList(new int[] { 17, 27 }, new int[] { 31, 46 }));
-		chips.add(Arrays.asList(new int[] { 0, 4 }));
+		timeLines.add(Arrays.asList(new int[] { 0, 2 }, new int[] { 6, 24 }));
+		timeLines.add(Arrays.asList(new int[] { 0, 12 }, new int[] { 27, 44 }));
+		timeLines.add(Arrays.asList(new int[] { 1, 18 }));
+		timeLines.add(Arrays.asList(new int[] { 0, 1 }, new int[] { 27, 44 }));
+		timeLines.add(Arrays.asList(new int[] { 17, 27 }, new int[] { 31, 46 }));
+		timeLines.add(Arrays.asList(new int[] { 0, 4 }));
 
+		initViews();
+		measureAndLayout();
+	}
+
+	public TimeLinePanel(List<List<int[]>> timeLines) {
+		setSize(width, height);
+		setLayout(null);
+		setBackground(Color.GRAY);
+		// setOpaque(false);
+		this.timeLines = timeLines;
 		initViews();
 		measureAndLayout();
 	}
 
 	private void initViews() {
 		// TODO Auto-generated method stub
-		items = new TimeLineItem[chips.size()];
-		for (int i = 0; i < chips.size(); i++)
-			items[i] = new TimeLineItem("Machine" + new Random().nextInt(20), chips.get(i));
-		
+		items = new TimeLineItem[timeLines.size()];
+		for (int i = 0; i < timeLines.size(); i++)
+			items[i] = new TimeLineItem("Machine" + new Random().nextInt(20), timeLines.get(i));
+
 	}
-	
-	private void measureAndLayout(){
-		int curY=marginTB;
-		for(TimeLineItem item:items){
+
+	private void measureAndLayout() {
+		int curY = marginTB;
+		for (TimeLineItem item : items) {
 			item.setBounds(0, curY, item.getWidth(), item.getHeight());
-			curY+=item.getHeight();
+			curY += item.getHeight();
 			add(item);
 		}
 	}
