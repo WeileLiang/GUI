@@ -21,7 +21,8 @@ public class DispatchPanel extends JPanel {
 	private LeftSidePanel leftSidePanel;
 	private TimePanel timePanel;
 	private TimeLinePanel timeLinePanel;
-
+	
+	private TimeLinePanel[] panels;
 	private VerticalLineSeparator separator;
 
 	private TransparentPanel alphaPanel;
@@ -42,6 +43,8 @@ public class DispatchPanel extends JPanel {
 		timePanel = new TimePanel();
 		separator = new VerticalLineSeparator(6, height, Color.WHITE);
 
+		panels=new TimeLinePanel[Info.getJobNames().size()];
+		
 		alphaPanel = new TransparentPanel(1.f);
 		alphaPanel.setSize(MyFrame.WIDTH * 3 / 4, MyFrame.HEIGHT);
 		alphaPanel.setBackground(Color.GRAY);

@@ -15,10 +15,15 @@ public class Info {
 
 	public static final String JOBS_PATH = ".\\jobs";
 	public static final String JOBSHOPS_PATH = ".\\jobshops";
+	public static final String CHIPS_PATH=".\\chips";
+	public static final String PRODUCT_PATH = ".\\products";
+	
+	//各个车间的设备的时间片
+	public static List<List<TimeLine>> timeLinesOfJobshop; 
+	
 	// 组件集合
 	public static List<String> jobNames;
 
-	public static final String PRODUCT_PATH = ".\\products";
 	// 产品集合
 	public static List<String> productNames;
 	// 产品包含的组件集合
@@ -31,6 +36,16 @@ public class Info {
 	// 车间的设备组成
 	public static List<List<String>> machinesOfJobshop;
 
+	public static List<List<TimeLine>> getTimeLinesOfJobshop() {
+		if(timeLinesOfJobshop==null){
+			File chips=new File(CHIPS_PATH);
+			if(chips.exists()){
+				
+			}
+		}
+		return timeLinesOfJobshop;
+	}
+	
 	public static List<String> getMachineNames() {
 		if (machineNames == null) {
 			machineNames = new ArrayList<>();
@@ -41,7 +56,7 @@ public class Info {
 	}
 
 	public static List<String> getJobshopNames(boolean refresh) {
-		if (refresh||jobshopNames == null)
+		if (refresh || jobshopNames == null)
 			initJobshops();
 		return jobshopNames;
 	}
@@ -161,6 +176,16 @@ public class Info {
 			}
 		}
 
+	}
+
+	public static class TimeLine {
+		public String name;
+		public List<int[]> chips;
+
+		public TimeLine(String name, List<int[]> chips) {
+			this.name = name;
+			this.chips = chips;
+		}
 	}
 
 }
