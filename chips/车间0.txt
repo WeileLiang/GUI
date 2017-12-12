@@ -15,7 +15,7 @@ Machine2
 40 49
 50 55
 
-Mahine3
+Machine3
 2
 20 39
 50 57

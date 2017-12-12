@@ -7,13 +7,20 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JPanel;
 
+import adapter.ItemClickListener;
+import constant.Info;
+import constant.Info.TimeLine;
 import main.MyFrame;
 import views.TimeLineItem;
 
@@ -25,28 +32,14 @@ public class TimeLinePanel extends JPanel {
 	private int itemHeight = height / 12;
 
 	private Font font = new Font("黑体", Font.PLAIN, 18);
+	
+	private ItemClickListener itemClickListener;
+	
+	List<TimeLine> timeLines = new ArrayList<TimeLine>();
+	// TimeLineItem[] items;
+	List<TimeLineItem> items;
 
-	List<List<int[]>> timeLines = new ArrayList<List<int[]>>();
-	TimeLineItem[] items;
-
-	public TimeLinePanel() {
-		setSize(width, height);
-		setLayout(null);
-		setBackground(Color.GRAY);
-		// setOpaque(false);
-
-		timeLines.add(Arrays.asList(new int[] { 0, 2 }, new int[] { 6, 24 }));
-		timeLines.add(Arrays.asList(new int[] { 0, 12 }, new int[] { 27, 44 }));
-		timeLines.add(Arrays.asList(new int[] { 1, 18 }));
-		timeLines.add(Arrays.asList(new int[] { 0, 1 }, new int[] { 27, 44 }));
-		timeLines.add(Arrays.asList(new int[] { 17, 27 }, new int[] { 31, 46 }));
-		timeLines.add(Arrays.asList(new int[] { 0, 4 }));
-
-		initViews();
-		measureAndLayout();
-	}
-
-	public TimeLinePanel(List<List<int[]>> timeLines) {
+	public TimeLinePanel(List<TimeLine> timeLines) {
 		setSize(width, height);
 		setLayout(null);
 		setBackground(Color.GRAY);
@@ -58,9 +51,9 @@ public class TimeLinePanel extends JPanel {
 
 	private void initViews() {
 		// TODO Auto-generated method stub
-		items = new TimeLineItem[timeLines.size()];
+		items = new ArrayList<>();
 		for (int i = 0; i < timeLines.size(); i++)
-			items[i] = new TimeLineItem("Machine" + new Random().nextInt(20), timeLines.get(i));
+			items.add(new TimeLineItem(timeLines.get(i).name, timeLines.get(i).chips));
 
 	}
 
@@ -73,6 +66,68 @@ public class TimeLinePanel extends JPanel {
 		}
 	}
 
+	public void addItemMouseListeners(boolean needSet) {
+		for (int i=0;i<items.size();i++) {
+			int position=i;
+			items.get(i).addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+					super.mouseEntered(e);
+					items.get(position).setBackground(Color.LIGHT_GRAY);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+					super.mouseExited(e);
+					items.get(position).setBackground(null);
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
+					super.mouseClicked(e);
+					if(itemClickListener!=null) itemClickListener.onItemClick(position);
+				}
+			});
+		}
+			
+	}
+
+	public void setItemClickListener(ItemClickListener itemClickListener) {
+		this.itemClickListener = itemClickListener;
+	}
+	
+	/**
+	 * 根据左侧菜单重新载入对应车间设备的时间线
+	 * 
+	 * @param jobshopName
+	 */
+	public void reLayout(String jobshopName) {
+		removeAll();
+		List<TimeLine> mTimeLines = Info.getTimeLinesOfJobshop().get(jobshopName);
+		items.clear();
+
+		for (int i = 0; i < mTimeLines.size(); i++)
+			items.add(new TimeLineItem(mTimeLines.get(i).name, mTimeLines.get(i).chips));
+
+		int curY = marginTB;
+		for (TimeLineItem item : items) {
+			item.setBounds(0, curY, item.getWidth(), item.getHeight());
+			curY += item.getHeight();
+			add(item);
+		}
+
+		repaint();
+	}
+
+	public void invalidate() {
+		for (TimeLineItem item : items)
+			item.repaint();
+
+		repaint();
+	}
 	// @Override
 	// protected void paintComponent(Graphics g) {
 	// // TODO Auto-generated method stub

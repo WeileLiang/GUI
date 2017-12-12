@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Info {
 
@@ -15,12 +17,12 @@ public class Info {
 
 	public static final String JOBS_PATH = ".\\jobs";
 	public static final String JOBSHOPS_PATH = ".\\jobshops";
-	public static final String CHIPS_PATH=".\\chips";
+	public static final String CHIPS_PATH = ".\\chips";
 	public static final String PRODUCT_PATH = ".\\products";
-	
-	//各个车间的设备的时间片
-	public static List<List<TimeLine>> timeLinesOfJobshop; 
-	
+
+	// 各个车间的设备的时间片
+	public static Map<String, List<TimeLine>> timeLinesOfJobshop;
+
 	// 组件集合
 	public static List<String> jobNames;
 
@@ -36,16 +38,80 @@ public class Info {
 	// 车间的设备组成
 	public static List<List<String>> machinesOfJobshop;
 
-	public static List<List<TimeLine>> getTimeLinesOfJobshop() {
-		if(timeLinesOfJobshop==null){
-			File chips=new File(CHIPS_PATH);
-			if(chips.exists()){
-				
+	public static Map<String, List<TimeLine>> getTimeLinesOfJobshop() {
+		if (timeLinesOfJobshop == null) {
+			File chips = new File(CHIPS_PATH);
+			if (chips.exists()) {
+				timeLinesOfJobshop = new HashMap<>();
+				File[] files = chips.listFiles();
+				for (File file : files)
+					timeLinesOfJobshop.put(file.getName().split("\\.")[0], createTimeLines(file));
+
 			}
 		}
 		return timeLinesOfJobshop;
 	}
-	
+
+	/**
+	 * 为每一个时间片-1
+	 */
+	public static void timeLinesCountDown() {
+		for (Map.Entry<String, List<TimeLine>> entry : timeLinesOfJobshop.entrySet()) {
+			List<TimeLine> timeLines = entry.getValue();
+			for (int i = 0; i < timeLines.size(); i++) {
+				List<int[]> chips = timeLines.get(i).chips;
+				for (int j = chips.size() - 1; j >= 0; j--) {
+					if (--chips.get(j)[1] <= 0) {
+						chips.remove(j);
+						continue;
+					}
+
+					if (--chips.get(j)[0] < 0)
+						chips.get(j)[0] = 0;
+
+				}
+
+			}
+		}
+	}
+
+	public static int totalTime = 0;
+
+	private static List<TimeLine> createTimeLines(File file) {
+		BufferedReader reader = null;
+		List<TimeLine> timeLines = new ArrayList<>();
+		try {
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			int count = Integer.parseInt(reader.readLine().trim());
+
+			for (int i = 0; i < count; i++) {
+				List<int[]> chips = new ArrayList<>();
+				// 空行
+				reader.readLine();
+				String machineName = reader.readLine().trim();
+				int chipsCount = Integer.parseInt(reader.readLine().trim());
+				while (chipsCount-- > 0) {
+					String[] chip = reader.readLine().trim().split(" ");
+					int start = Integer.parseInt(chip[0]);
+					int end = Integer.parseInt(chip[1]);
+					totalTime = Math.max(totalTime, end);
+					chips.add(new int[] { start, end });
+				}
+
+				timeLines.add(new TimeLine(machineName, chips));
+			}
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return timeLines;
+	}
+
 	public static List<String> getMachineNames() {
 		if (machineNames == null) {
 			machineNames = new ArrayList<>();

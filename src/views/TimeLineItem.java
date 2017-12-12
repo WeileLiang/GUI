@@ -38,21 +38,7 @@ public class TimeLineItem extends JPanel{
 		setBackground(null);
 //		setOpaque(false);
 		
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				super.mouseEntered(e);
-				setBackground(Color.LIGHT_GRAY);
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				super.mouseExited(e);
-				setBackground(null);
-			}
-		});
+		
 	}
 
 	@Override
