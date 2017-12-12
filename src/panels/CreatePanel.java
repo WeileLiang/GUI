@@ -37,7 +37,7 @@ public abstract class CreatePanel extends JPanel implements MouseListener {
 	private int marginTB = height / 15;
 	// Item的边长
 	private int itemSize = MyFrame.WIDTH / 12;
-	private int fontSize = 15;
+	private int fontSize = 12;
 
 	private JLabel allSelect = new JLabel("全选", JLabel.CENTER);
 	private JLabel notSelect = new JLabel("全不选", JLabel.CENTER);

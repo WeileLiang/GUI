@@ -10,12 +10,12 @@ Machine12
 30 36
 45 57
 
-Mahine13
+Machine13
 2
 3 11
 31 51
 
-Mahine15
+Machine15
 5
 7 10
 13 19
